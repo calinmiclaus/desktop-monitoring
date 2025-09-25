@@ -1,0 +1,29 @@
+groups:
+- name: host_alerts
+  rules:
+  - alert: HighCPUUsage
+    expr: 100 - (avg by (instance)(rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 80
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High CPU usage on {{ $labels.instance }}"
+      description: "CPU usage > 80% for 2 minutes."
+
+  - alert: HighMemoryUsage
+    expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 80
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High memory usage on {{ $labels.instance }}"
+      description: "Memory usage > 80% for 2 minutes."
+
+  - alert: HighDiskIO
+    expr: rate(node_disk_io_time_seconds_total[1m]) > 0.5
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High Disk IO on {{ $labels.instance }}"
+      description: "Disk IO time > 50% over 1 minute."

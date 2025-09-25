@@ -1,0 +1,11 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: 'default'
+
+receivers:
+- name: 'default'
+  # For testing just log alerts
+  webhook_configs:
+  - url: 'http://127.0.0.1:5001'
